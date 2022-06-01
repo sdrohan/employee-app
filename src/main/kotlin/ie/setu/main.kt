@@ -1,10 +1,14 @@
 package ie.setu
 
+import mu.KotlinLogging
 import kotlin.math.round
 
+val logger = KotlinLogging.logger {}
 var employees = EmployeeAPI()
 
+
 fun main(args: Array<String>){
+    logger.info { "Launching Employee App" }
     start()
 }
 
