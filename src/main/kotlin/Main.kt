@@ -14,40 +14,44 @@ val pensionContributionPercentage: Double = 6.7
 
 fun main() {
     println("Pay Slip Printer")
-    printPayslip()
+    println(getPayslip())
 }
 
-fun printPayslip() {
-    // Calculations
-    val normalPay = hourlyRate * hoursWorked
-    val overtimePay = overtimeHoursWorked * (hourlyRate * 1.5)
-    val grossPay = normalPay + overtimePay
-    val bonus = grossPay * (bonusPercentage / 100)
-    val tax = grossPay * (taxRatePercentage / 100)
-    val pension = grossPay * (pensionContributionPercentage / 100)
-    val netPay = grossPay + bonus - tax - pension
+fun getPayslip(): String {
 
-    println("==================================================")
-    println("               PAYSLIP                 ")
-    println("==================================================")
-
-    println("Employee ID       : $employeeId")
-    println("Employee          : ${getFullName()} ($employeeId)")
-    println("Job / Dept        : $jobTitle ($department)")
-    println("--------------------------------------------------")
-    println("Hourly Rate       : €$hourlyRate")
-    println("Hours Worked      : $hoursWorked")
-    println("Overtime Hours    : $overtimeHoursWorked")
-    println("--------------------------------------------------")
-    println("Normal Pay        : €%.2f".format(normalPay))
-    println("Overtime Pay      : €%.2f".format(overtimePay))
-    println("Gross Pay         : €%.2f".format(grossPay))
-    println("Bonus             : €%.2f".format(bonus))
-    println("Tax Deduction     : €%.2f".format(tax))
-    println("Pension Deduction : €%.2f".format(pension))
-    println("--------------------------------------------------")
-    println("Net Pay           : €$netPay")
-    println("==================================================")
+    return """
+        |==================================================
+        |               PAYSLIP                 
+        |==================================================
+        |
+        |Employee ID       : $employeeId
+        |Employee          : ${getFullName()} ($employeeId)
+        |Job / Dept        : $jobTitle ($department)
+        |--------------------------------------------------
+        |Hourly Rate       : €$hourlyRate
+        |Hours Worked      : $hoursWorked
+        |Overtime Hours    : $overtimeHoursWorked
+        |--------------------------------------------------
+        |Normal Pay        : ${money(calculateNormalPay())}
+        |Overtime Pay      : ${money(calculateOvertimePay())}
+        |Gross Pay         : ${money(calculateGrossPay())}
+        |Bonus             : ${money(calculateBonus())}
+        |Tax Deduction     : ${money(calculateTax())}
+        |Pension Deduction : ${money(calculatePension())}
+        |--------------------------------------------------
+        |Net Pay           : ${money(calculateNetPay())}
+        |==================================================
+    """.trimMargin()
 }
 
 fun getFullName() = "${firstName.uppercase()} ${surname.uppercase()}"
+fun calculateNormalPay() = hourlyRate * hoursWorked
+fun calculateOvertimePay() = overtimeHoursWorked * (hourlyRate * 1.5)
+fun calculateGrossPay() = calculateNormalPay() + calculateOvertimePay()
+fun calculateBonus() = calculateGrossPay() * (bonusPercentage / 100)
+fun calculateTax() = calculateGrossPay() * (taxRatePercentage / 100)
+fun calculatePension() = calculateGrossPay() * (pensionContributionPercentage / 100)
+fun calculateNetPay() = calculateGrossPay() + calculateBonus() - calculateTax() - calculatePension()
+
+// Utility function to format monetary values to two decimal places
+fun money(value: Double) = "€%.2f".format(value)
