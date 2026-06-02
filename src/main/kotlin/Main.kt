@@ -1,4 +1,7 @@
 import model.Employee
+import service.PayrollService
+
+val payrollService = PayrollService
 
 var employee = Employee(
     1,
@@ -25,13 +28,13 @@ fun main(){
         when(input) {
             1 -> println("Hourly Rate: ${employee.hourlyRate}")
             2 -> println("Hours Worked: ${employee.hoursWorked}")
-            3 -> println("Overtime Hours: ${employee.overtimeHoursWorked}, Amount Earned: ${calculateOvertimePay()}")
-            4 -> println("Bonus Amount: ${money(calculateBonus())}")
-            5 -> println("Tax Paid: ${money(calculateTax())} at rate ${employee.taxRatePercentage}")
-            6 -> println("Pension Paid: ${money(calculatePension())} at rate ${employee.pensionContributionPercentage}")
-            7 -> println("Gross Pay: ${money(calculateGrossPay())}")
-            8 -> println("Net pay: ${money(calculateNetPay())}")
-            9 -> println(getPayslip())
+            3 -> println("Overtime Hours: ${employee.overtimeHoursWorked}, Amount Earned: ${payrollService.calculateOvertimePay(employee)}")
+            4 -> println("Bonus Amount: ${money(payrollService.calculateBonus(employee))}")
+            5 -> println("Tax Paid: ${money(payrollService.calculateTax(employee))} at rate ${employee.taxRatePercentage}")
+            6 -> println("Pension Paid: ${money(payrollService.calculatePension(employee))} at rate ${employee.pensionContributionPercentage}")
+            7 -> println("Gross Pay: ${money(payrollService.calculateGrossPay(employee))}")
+            8 -> println("Net pay: ${money(payrollService.calculateNetPay(employee))}")
+            9 -> println(payrollService.getPayslip(employee))
             -1 -> println("Exiting App")
             else -> println("Invalid Option")
         }
@@ -42,7 +45,7 @@ fun main(){
 
 fun menu() : Int {
     print("""
-         Employee Menu for ${getFullName()}
+         Employee Menu for ${payrollService.getFullName(employee)}
            1. Hourly Rate
            2. Hours Worked
            3. Overtime Hours
@@ -106,42 +109,6 @@ fun add() {
         pensionContributionPercentage
     )
 }
-
-fun getPayslip(): String {
-
-    return """
-        |==================================================
-        |               PAYSLIP                 
-        |==================================================
-        |
-        |Employee ID       : ${employee.employeeId}
-        |Employee          : ${getFullName()} (${employee.employeeId})
-        |Job / Dept        : ${employee.jobTitle} (${employee.department})
-        |--------------------------------------------------
-        |Hourly Rate       : €${employee.hourlyRate}
-        |Hours Worked      : ${employee.hoursWorked}
-        |Overtime Hours    : ${employee.overtimeHoursWorked}
-        |--------------------------------------------------
-        |Normal Pay        : ${money(calculateNormalPay())}
-        |Overtime Pay      : ${money(calculateOvertimePay())}
-        |Gross Pay         : ${money(calculateGrossPay())}
-        |Bonus             : ${money(calculateBonus())}
-        |Tax Deduction     : ${money(calculateTax())}
-        |Pension Deduction : ${money(calculatePension())}
-        |--------------------------------------------------
-        |Net Pay           : ${money(calculateNetPay())}
-        |==================================================
-    """.trimMargin()
-}
-
-fun getFullName() = "${employee.firstName.uppercase()} ${employee.surname.uppercase()}"
-fun calculateNormalPay() = employee.hourlyRate * employee.hoursWorked
-fun calculateOvertimePay() = employee.overtimeHoursWorked * (employee.hourlyRate * 1.5)
-fun calculateGrossPay() = calculateNormalPay() + calculateOvertimePay()
-fun calculateBonus() = calculateGrossPay() * (employee.bonusPercentage / 100)
-fun calculateTax() = calculateGrossPay() * (employee.taxRatePercentage / 100)
-fun calculatePension() = calculateGrossPay() * (employee.pensionContributionPercentage / 100)
-fun calculateNetPay() = calculateGrossPay() + calculateBonus() - calculateTax() - calculatePension()
 
 // Utility function to format monetary values to two decimal places
 fun money(value: Double) = "€%.2f".format(value)
