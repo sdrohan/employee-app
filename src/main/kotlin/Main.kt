@@ -1,11 +1,15 @@
 import model.Employee
+import mu.KotlinLogging
 import repository.EmployeeRepository
 import service.PayrollService
 
 val payrollService = PayrollService()
 val employeeRepository = EmployeeRepository()
+val logger = KotlinLogging.logger {}
 
 fun main(){
+    logger.info { "Launching Employee App" }
+
     var input : Int
 
     do {
@@ -39,6 +43,7 @@ fun menu() : Int {
 fun list() = employeeRepository.getAll().forEach { println(it) }
 
 fun getEmployeeById(): Employee? {
+    logger.info { "Searching Employees Activated" }
     print("Enter the employee id to search by: ")
     val employeeID = readln().toInt()
     return employeeRepository.findById(employeeID)
@@ -71,6 +76,7 @@ fun dummyData() {
             55.99, 35, 3, 4.0, 43.5, 5.0
         )
     )
+    logger.info { "Dummy Data Added" }
 }
 
 fun add() {
@@ -118,6 +124,8 @@ fun add() {
         taxRatePercentage,
         pensionContributionPercentage)
     )
+
+    logger.info { "Employee Added" }
 }
 
 // Utility function to format monetary values to two decimal places
