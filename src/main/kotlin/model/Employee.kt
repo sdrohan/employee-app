@@ -12,4 +12,8 @@ data class Employee (
     var bonusPercentage: Double,
     var taxRatePercentage: Double,
     var pensionContributionPercentage: Double){
+
+    override fun toString(): String {
+        return "[Employee] id=$employeeId | name=$firstName $surname | dept=$department | job=$jobTitle | rate=€$hourlyRate | hours=$hoursWorked | overtime=$overtimeHoursWorked | bonus=$bonusPercentage% | tax=$taxRatePercentage% | pension=$pensionContributionPercentage%"
+    }
 }

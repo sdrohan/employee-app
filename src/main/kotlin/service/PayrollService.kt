@@ -3,7 +3,7 @@ package service
 import model.Employee
 import money
 
-object PayrollService {
+class PayrollService {
 
     fun calculateNormalPay(employee: Employee)
             = employee.hourlyRate * employee.hoursWorked
