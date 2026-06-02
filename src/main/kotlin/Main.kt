@@ -1,16 +1,15 @@
-val employeeId: Int = 6143
-val firstName: String = "Joe"
-val surname: String = "Soap"
-val department: String = "Computer Services"
-val jobTitle: String = "Technician"
-
-val hourlyRate: Double = 26.87
-val hoursWorked: Int = 39
-val overtimeHoursWorked: Int = 4
-
-val bonusPercentage: Double = 4.5
-val taxRatePercentage: Double = 23.5
-val pensionContributionPercentage: Double = 6.7
+var employee =  Employee(
+    1,
+    "Joe",
+    "Soap",
+    "Computer Services",
+    "Technician",
+    32.45,
+    38,
+    5,
+    5.0,
+    23.0,
+    7.5)
 
 fun main(){
 
@@ -19,12 +18,12 @@ fun main(){
     do {
         input = menu()
         when(input) {
-            1 -> println("Hourly Rate: $hourlyRate")
-            2 -> println("Hours Worked: $hoursWorked")
-            3 -> println("Overtime Hours: $overtimeHoursWorked, Amount Earned: ${calculateOvertimePay()}")
+            1 -> println("Hourly Rate: ${employee.hourlyRate}")
+            2 -> println("Hours Worked: ${employee.hoursWorked}")
+            3 -> println("Overtime Hours: ${employee.overtimeHoursWorked}, Amount Earned: ${calculateOvertimePay()}")
             4 -> println("Bonus Amount: ${money(calculateBonus())}")
-            5 -> println("Tax Paid: ${money(calculateTax())} at rate $taxRatePercentage")
-            6 -> println("Pension Paid: ${money(calculatePension())} at rate $pensionContributionPercentage")
+            5 -> println("Tax Paid: ${money(calculateTax())} at rate ${employee.taxRatePercentage}")
+            6 -> println("Pension Paid: ${money(calculatePension())} at rate ${employee.pensionContributionPercentage}")
             7 -> println("Gross Pay: ${money(calculateGrossPay())}")
             8 -> println("Net pay: ${money(calculateNetPay())}")
             9 -> println(getPayslip())
@@ -60,13 +59,13 @@ fun getPayslip(): String {
         |               PAYSLIP                 
         |==================================================
         |
-        |Employee ID       : $employeeId
-        |Employee          : ${getFullName()} ($employeeId)
-        |Job / Dept        : $jobTitle ($department)
+        |Employee ID       : ${employee.employeeId}
+        |Employee          : ${getFullName()} (${employee.employeeId})
+        |Job / Dept        : ${employee.jobTitle} (${employee.department})
         |--------------------------------------------------
-        |Hourly Rate       : €$hourlyRate
-        |Hours Worked      : $hoursWorked
-        |Overtime Hours    : $overtimeHoursWorked
+        |Hourly Rate       : €${employee.hourlyRate}
+        |Hours Worked      : ${employee.hoursWorked}
+        |Overtime Hours    : ${employee.overtimeHoursWorked}
         |--------------------------------------------------
         |Normal Pay        : ${money(calculateNormalPay())}
         |Overtime Pay      : ${money(calculateOvertimePay())}
@@ -80,13 +79,13 @@ fun getPayslip(): String {
     """.trimMargin()
 }
 
-fun getFullName() = "${firstName.uppercase()} ${surname.uppercase()}"
-fun calculateNormalPay() = hourlyRate * hoursWorked
-fun calculateOvertimePay() = overtimeHoursWorked * (hourlyRate * 1.5)
+fun getFullName() = "${employee.firstName.uppercase()} ${employee.surname.uppercase()}"
+fun calculateNormalPay() = employee.hourlyRate * employee.hoursWorked
+fun calculateOvertimePay() = employee.overtimeHoursWorked * (employee.hourlyRate * 1.5)
 fun calculateGrossPay() = calculateNormalPay() + calculateOvertimePay()
-fun calculateBonus() = calculateGrossPay() * (bonusPercentage / 100)
-fun calculateTax() = calculateGrossPay() * (taxRatePercentage / 100)
-fun calculatePension() = calculateGrossPay() * (pensionContributionPercentage / 100)
+fun calculateBonus() = calculateGrossPay() * (employee.bonusPercentage / 100)
+fun calculateTax() = calculateGrossPay() * (employee.taxRatePercentage / 100)
+fun calculatePension() = calculateGrossPay() * (employee.pensionContributionPercentage / 100)
 fun calculateNetPay() = calculateGrossPay() + calculateBonus() - calculateTax() - calculatePension()
 
 // Utility function to format monetary values to two decimal places
