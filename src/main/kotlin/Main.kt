@@ -1,4 +1,6 @@
-var employee =  Employee(
+import model.Employee
+
+var employee = Employee(
     1,
     "Joe",
     "Soap",
@@ -9,7 +11,8 @@ var employee =  Employee(
     5,
     5.0,
     23.0,
-    7.5)
+    7.5
+)
 
 fun main(){
 
